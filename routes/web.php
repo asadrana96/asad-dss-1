@@ -37,7 +37,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('logout', 'LoginController@logout')->name('logout');
     Route::delete('ajax-delete-zones','Admin\ZoneController@ajax_delete_zones')->name('ajax-delete-zones');
+    Route::delete('ajax-delete-branches','Admin\BranchController@ajax_delete_branches')->name('ajax-delete-branches');
     Route::post('ajax-next-device-template-setting','Admin\DeviceTemplateController@next_step')->name('next_step');
+   
 });
 
 Route::get('login', 'LoginController@login_view')->name('login');

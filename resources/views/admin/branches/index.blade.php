@@ -15,6 +15,20 @@
     span.select2-selection.select2-selection--single {
         text-align: left;
     }
+    ul {
+            text-align: left !important;
+        }
+        .checkBoxDiv{
+            width:10px;
+        }
+        .select2-container {
+            box-sizing: border-box;
+            display: inline-block;
+            margin: 0;
+            position: relative;
+            width: 100% !important;
+            text-align:left;
+        }
 </style>
 
 @section('content')
@@ -43,12 +57,21 @@
                     <div class="panel-body">
                         <a href="{{url('branches/create')}}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add</a>
                         <button data-target="#assignBranches" data-toggle="modal" class="btn btn-primary btn-rounded"><i class="fa fa-arrow-right"></i>&nbsp;&nbsp;Assign</button>
-                        <button id="deleteBtn" type="button" class="btn btn-primary btn-rounded pull-right btn-hover-danger"><i class="fa fa-times"></i> &nbsp;&nbsp;Delete</button>
+                        <button id="deleteBtn" type="button" class="btn btn-primary btn-rounded pull-right btn-hover-danger"><i
+                                class="fa fa-times"></i> &nbsp;&nbsp;Delete
+                        </button>
+                        <input id="action" type="hidden" value="{{route('ajax-delete-branches')}}">
                         <div class="panel">
                             <div class="panel-body">
                                 <table id="branches" class="table table-bordered">
                                     <thead>
                                     <tr>
+                                    <th class="checkBoxDiv">
+                                            <div class="checkbox">
+                                                <input id="check" value="" class="magic-checkbox checkBoxMain" type="checkbox">
+                                                <label for="check"></label>
+                                            </div>
+                                        </th>
                                         <th>#</th>
                                         <th>Branch Name</th>
                                         <th>Branch Code</th>
@@ -64,6 +87,12 @@
                                     <tbody>
                                     @foreach($branches as $key => $branch)
                                         <tr>
+                                        <td>
+                                                <div class="checkbox">
+                                                    <input data-branch_id="{{$branch->id}}" id="branch-check-{{$branch->id}}" value="{{$branch->id}}" class="magic-checkbox" type="checkbox">
+                                                    <label for="branch-check-{{$branch->id}}"></label>
+                                                </div>
+                                            </td>
                                             <td style="width: 40px">{{$key +  1}}</td>
                                             <td>{{$branch->branch_name}}</td>
                                             <td>{{$branch->branch_code}}</td>
@@ -105,7 +134,9 @@
                         </div>
                     </div>
                     @include('admin.branches.modals.assign')
+                    @include('admin.branches.modals.delete')
 {{--                    @include('admin.branches.modals.assign-view')--}}
+                                     
                     @foreach($branches as $b)
                         <div class="modal fade" id="{{$b->id}}" tabindex="-1" role="dialog"
                              aria-labelledby="exampleModalLabel"
@@ -144,5 +175,7 @@
         </div>
     </div>
 @endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+@section('js')
+{{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>--}}
 <script src="{{asset('admin-assets/scripts/branches.js')}}"></script>
+@endsection

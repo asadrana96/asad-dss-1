@@ -211,9 +211,14 @@
                                                     <img src="{{url('/') . "/" . $img->asset_url}}" height="50">
                                                 @endforeach
                                             </td>
+                                            
+                                           
                                             <td class="width-images">
-
+                                                @foreach($temp->image as $img)
+                                                    <img src="{{url('/') . "/" . $img->asset_url}}" height="50">
+                                                @endforeach
                                             </td>
+                                            
                                             <td class="width-videos">
                                                 @foreach($temp->videos as $video)
                                                     <a class="btn btn-primary" href="{{url('/') . "/" . $video->asset_url}}" target="_blank">

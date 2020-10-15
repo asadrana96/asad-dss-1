@@ -61,6 +61,15 @@ class BranchController extends Controller
         return redirect('branches')->with('success','Branch deleted successfully');
 
     }
+    public function ajax_delete_branches(Request $request)
+    {
+        $id = $request['id'];
+
+        Branch::find($id)->delete();
+        return response()->json([
+            'status' => true,
+        ]);
+    }
 
     public function assign_branch(AssignBranchesToCityRequest $request, AssignBranchesToCities $assignBranchesToCitiesService){
 

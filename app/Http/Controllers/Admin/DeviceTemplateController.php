@@ -33,7 +33,8 @@ class DeviceTemplateController extends Controller
         $templates = DeviceTemplateData::with(['device_templates','template_assets'])->get();
 
         foreach ($templates as $template){
-            $template->images = DeviceTemplateAsssets::where('template_data_id',$template->id)->where('asset_type','image')->get();
+            $template->images = DeviceTemplateAsssets::where('template_data_id',$template->id)->where('asset_box_number','1')->get();
+            $template->image = DeviceTemplateAsssets::where('template_data_id',$template->id)->where('asset_box_number','2')->get();
             $template->videos = DeviceTemplateAsssets::where('template_data_id',$template->id)->where('asset_type','video')->get();
         }
 
