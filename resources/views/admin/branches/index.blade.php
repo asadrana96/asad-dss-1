@@ -57,20 +57,19 @@
                     <div class="panel-body">
                         <a href="{{url('branches/create')}}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add</a>
                         <button data-target="#assignBranches" data-toggle="modal" class="btn btn-primary btn-rounded"><i class="fa fa-arrow-right"></i>&nbsp;&nbsp;Assign</button>
-                        <button id="deleteBtn" type="button" class="btn btn-primary btn-rounded pull-right btn-hover-danger"><i
+                        <button id="deleteAllSelectedRecords" type="button" class="btn btn-primary btn-rounded pull-right btn-hover-danger"><i
                                 class="fa fa-times"></i> &nbsp;&nbsp;Delete
                         </button>
-                        <input id="action" type="hidden" value="{{route('ajax-delete-branches')}}">
+                        
                         <div class="panel">
                             <div class="panel-body">
                                 <table id="branches" class="table table-bordered">
                                     <thead>
                                     <tr>
-                                    <th class="checkBoxDiv">
-                                            <div class="checkbox">
-                                                <input id="check" value="" class="magic-checkbox checkBoxMain" type="checkbox">
-                                                <label for="check"></label>
-                                            </div>
+                                    <th>
+                                            
+                                                <input type= "checkbox" id="chkCheckAll" />
+                                               
                                         </th>
                                         <th>#</th>
                                         <th>Branch Name</th>
@@ -86,12 +85,11 @@
                                     </thead>
                                     <tbody>
                                     @foreach($branches as $key => $branch)
-                                        <tr>
+                                        <tr id="bid{{$branch->id}}">
                                         <td>
-                                                <div class="checkbox">
-                                                    <input data-branch_id="{{$branch->id}}" id="branch-check-{{$branch->id}}" value="{{$branch->id}}" class="magic-checkbox" type="checkbox">
-                                                    <label for="branch-check-{{$branch->id}}"></label>
-                                                </div>
+                                                
+                                                    <input type="checkbox" name="ids" class="checkBoxClass" value="{{$branch->id}}"/>
+                                                
                                             </td>
                                             <td style="width: 40px">{{$key +  1}}</td>
                                             <td>{{$branch->branch_name}}</td>
@@ -178,4 +176,41 @@
 @section('js')
 {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>--}}
 <script src="{{asset('admin-assets/scripts/branches.js')}}"></script>
+<script>
+$(function(e){
+    $("#chkCheckAll").click(function(){
+        $(".checkBoxClass").prop('checked',$(this).prop('checked'));
+
+    });
+
+    $('#deleteAllSelectedRecords').click(function(e){
+        e.preventDefault();
+        var allids = [];
+        $("input:checkbox[name=ids]:checked").each(function(){
+            allids.push($(this).val());
+        });
+
+        $.ajax({
+            url:"{{route('branch.deleteselected')}}",
+            type:'DELETE',
+            data:{
+                ids:allids,
+                _token:$("input[name=_token]").val()
+            },
+            success:function(response)
+            {
+                $.each(allids,function(key,val)
+                {
+                    $('#bid'+val).remove();
+
+                });
+            }
+
+        });
+
+    }
+    );
+
+});
+</script>
 @endsection
